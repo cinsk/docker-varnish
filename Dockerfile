@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update
 
 # Install base system
-RUN apt-get install -y varnish vim git
+RUN apt-get install -y varnish vim git dnsutils
 
 # Make our custom VCLs available on the container
 ADD default.vcl /etc/varnish/default.vcl
@@ -21,9 +21,10 @@ ENV VARNISH_PORT 80
 # Expose port 80
 EXPOSE 80
 
+ADD generate.sh /generate.sh
 ADD parse /parse
 ADD start /start
 
-RUN chmod 0755 /start /parse
+RUN chmod 0755 /start /parse /generate.sh
 
 CMD ["/start"]
